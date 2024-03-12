@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head_form'); %>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-2"></div>
+            <div class="col-lg-6 col-md-8 login-box">
+                <div class="col-lg-12 login-key">
+                    <i class="fa fa-key" aria-hidden="true"></i>
+                </div>
+                <div class="col-lg-12 login-title">
+                    <%- title %>
+                </div>
+                <div class="col-lg-12 login-form">
+                    <div class="col-lg-12 login-form">
+                        <!-- action="<%= (title == 'Sign In') ? 'login' : 'sign-up' %>" -->
+                        <form  class="w3-container" method="post" id="<%= (title == 'Sign In') ? 'SI_form' : 'SU_form' %>">
+                            <div class="form-group">
+                                <label class="form-control-label">USERNAME</label>
+                                <input type="text" class="form-control" name="username" value="" id="<%= (title == 'Sign In') ? 'SI_username': 'SU_username' %>">
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="form-group" >
+                                <label class="form-control-label">PASSWORD</label>
+                                <input type="password" class="form-control" name="password" value="" id="<%= (title == 'Sign In') ? 'SI_password': 'SU_password' %>">
+                                <span class="help-block"></span>
+                            </div>
+                            <% if(title == "Sign Up"){ %>
+                                <%- include('../signUp_form'); %>
+                            <% } else if(title == "Sign In"){ %>
+                                <%- include('../signIn_form'); %>
+                            <% } %>
+
+                            <div class="col-lg-12 loginbttm">
+                                <div class="col-lg-6 login-btm login-text">
+                                    <!-- Error Message -->
+                                    <p id="errMessage"></p>
+                                </div>
+                                
+                                <div class="col-lg-6 login-btm login-button">
+                                    <div class="form-group">
+                                        <input type="submit"class="btn btn-outline-primary" value="<%= (title == 'Sign In') ? 'Ingresar' : 'Registrar' %>">
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>   
+                <div class="col-lg-3 col-md-2"></div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../scripts/<%= (title == 'Sign In') ? 'SI_form.js' : 'SU_form.js' %>"></script>
+</body>
