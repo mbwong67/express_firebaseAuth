@@ -1,8 +1,5 @@
 //TODO: eliminar esto en caso de que no se use
-// const { verify } = require("jsonwebtoken");
-// const jwt_verify = verify;
-// const secretKey = require('../helpers/config').J_KEY;
-const { auth } = require("../helpers/firebase"); //verificar si sirve
+const { auth } = require("../helpers/firebase");
 const { authAdmin } = require('../helpers/firebase_admin');
 
 module.exports = {
@@ -38,15 +35,18 @@ module.exports = {
         try {
             //TODO: cheque el token
             const idToken = await auth.currentUser.getIdTokenResult();
+            res.locals.access = idToken.claims.access;
 
-            if( idToken.claims.admin )  res.locals.privilege = 2;
-            else    res.locals.privilege = 1;
-            
+            console.log(`ìsLoggedIn {${JSON.stringify(idToken.claims)}}`)
+            if( idToken.claims.admin === true )  res.locals.privilege = 2;
+            else if( idToken.claims.admin === false)    res.locals.privilege = 1;
+            else throw new Error('No claim in token');
+
             next();
         } catch ( error ) {
-            return res.status(401).send({
-            msg: 'Your session is not valid!'
-            });
+            console.error( error.message );
+            res.redirect( 302,'/user/login');
+            // res.status(401).location('user/location').end();
         }
     }
 }
