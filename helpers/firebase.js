@@ -3,7 +3,7 @@ const { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, A
 
 // Import the functions you need from the SDKs you need
 const fApp = require("firebase/app");
-const { getAuth } = require ("firebase/auth");
+const { getAuth, onAuthStateChanged } = require ("firebase/auth");
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -20,4 +20,4 @@ const firebaseConfig = {
 const app = fApp.initializeApp(firebaseConfig);
 // // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
-module.exports = { auth };
+module.exports = { auth, onAuthStateChanged};
