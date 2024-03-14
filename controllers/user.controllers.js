@@ -1,8 +1,8 @@
-const secretKey = require("../helpers/config.js").J_KEY;
-const { hash, compare } = require("bcryptjs");
-const { sign } = require("jsonwebtoken");
-const jwt_sign = sign;
-const { UserManager } = require("../services/user.services.js");
+// const secretKey = require("../helpers/config.js").J_KEY;
+// const { hash, compare } = require("bcryptjs");
+// const { sign } = require("jsonwebtoken");
+// const jwt_sign = sign;
+const { userManager } = require('../services/user.services.js');
 
 
 
@@ -14,7 +14,7 @@ const signUp = ( req, res, next ) => {
     const email = res.locals.username;
     const pass = req.body.password;
 
-    UserManager.register(email, pass)
+    userManager.register(email, pass)
     .then((response) => {
         if (response === 1) {
             res.status(201).send({
@@ -38,7 +38,7 @@ const login = ( req, res, next ) => {
     const email = req.body.username;
     const pass = req.body.password;
 
-    UserManager.authenticate(email, pass)
+    userManager.authenticate(email, pass)
     .then((response) => {
         if( response === 1){
             res.status(200).send({
