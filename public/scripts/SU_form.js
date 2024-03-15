@@ -13,8 +13,10 @@ document.getElementById("SU_form").addEventListener("submit", (e) =>{
 
     // Convierte el objeto JavaScript a una cadena JSON
     const jsonData = JSON.stringify(formDataObj);
-    console.log(jsonData);
-    const baseUrl = 'http://localhost:3000/user/';
+    // const ip = '192.168.137.83';
+    const ip = 'localhost'
+
+    const baseUrl = `http://${ip}:3000/user/`;
     fetch(baseUrl + "sign-up", {
         method: "POST",
         body: jsonData,
@@ -31,7 +33,9 @@ document.getElementById("SU_form").addEventListener("submit", (e) =>{
             window.location.href = baseUrl + 'login';
         }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
             errorMessage.textContent = 'Error authenticating';
-        
+            setTimeout(()=>{
+                errorMessage.textContent = '';
+            },3000);
         }
     })
     console.log('despuesde');
