@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head_form'); %>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-2"></div>
+            <div class="col-lg-6 col-md-8 login-box">
+                <p><%- title %></p>
+                <% if(!access){ %>
+                    <%- include('../wait_auth'); %>
+                <% } else if(rol === 'common_user'){ %>
+                    <%- include('../userView.ejs') %>
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+    <!-- <div id="noVis" accAttribute="<%= access %>"></div> -->
+    <script type="module" src="../scripts/user_home.js"></script>
+</body>
+</html>
