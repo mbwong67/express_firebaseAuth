@@ -3,11 +3,12 @@ const { authAdmin } = require('../helpers/firebase_admin');
 const { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } = require("firebase/auth");
 
 
-class ManageAccount {
+class UserService {
     async register(email, password) {
       try{
         //user is created for Firebase Auth and returns user obj
-        const user = await createUserWithEmailAndPassword(auth, email, password).user;
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
         //sets claims that are applied into the user jwt token
         //TODO: probar que funce
         const setClaims = await authAdmin.setCustomUserClaims(user.uid, { 
@@ -19,6 +20,7 @@ class ManageAccount {
         //do sth with userCredential
         return 1;
       }catch( error ){
+        console.error( error.message );
         return 0;
       }
     }
@@ -38,24 +40,27 @@ class ManageAccount {
     // }
     async authenticate(email, password) {
       try{
-        const user = await signInWithEmailAndPassword(auth, email, password).user;
-        //do sth with userCredential
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
         //gets user token jwt
         //TODO: Checar si jala
-        const idToken = user.getIdTokenResult();
+        const idToken = await user.getIdTokenResult();
         //Confirm is a common user
         if(!idToken.claims.admin){
           const uid = user.uid;
           //sets access to default (false)
+          // console.log(idToken.claims);
           const updateClaim = await authAdmin.setCustomUserClaims(uid,{
-            ...auth.currentUser.claims,
+            admin: idToken.claims.admin,
+            commonUser: idToken.claims.commonUser,
             access: false
           });
         }
-
+        console.log(`authenticate {${JSON.stringify(idToken.claims)}}`);
         return 1;
 
       }catch( error ){
+        console.error( error.message)
         return 0;
       }
     }
@@ -80,7 +85,8 @@ class ManageAccount {
           const uid = auth.currentUser.uid;
           //sets access to default (false)
           const updateClaim = await authAdmin.setCustomUserClaims(uid,{
-            ...auth.currentUser.claims,
+            admin: idToken.claims.admin,
+            commonUser: idToken.claims.commonUser,
             access: false
           });
         }
@@ -89,9 +95,10 @@ class ManageAccount {
 
         return 1
       }catch( error ){
+        console.error( error.message );
         return 0
       }
     }
 };
-const UserManager = new ManageAccount();
-module.exports = { UserManager };
+const userManager = new UserService();
+module.exports = { userManager };
