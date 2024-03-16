@@ -32,10 +32,13 @@ checkboxes.forEach(checkbox => {
         .then( response => {
             if( response.status === 200 ){ //si es 200 redireccionar
                 // return fetch(baseUrl + "login");
-                window.location.href = baseUrl + 'home';
+                // window.location.href = baseUrl + 'home';
             }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
                 e.preventDefault();
                 errorMessage.textContent = 'No se realizó el ajuste';
+                setTimeout(()=>{
+                    errorMessage.textContent = '';
+                },3000);
 
                 //reverts checkbox state if process failed
                 //TODO: checar si jala
