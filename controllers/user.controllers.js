@@ -1,9 +1,5 @@
-// const secretKey = require("../helpers/config.js").J_KEY;
-// const { hash, compare } = require("bcryptjs");
-// const { sign } = require("jsonwebtoken");
-// const jwt_sign = sign;
 const { userManager } = require('../services/user.services.js');
-
+const { cookieManager } = require('../services/cookie.services.js');
 
 
 const signUp = ( req, res, next ) => {
@@ -40,14 +36,19 @@ const login = ( req, res, next ) => {
 
     userManager.authenticate(email, pass)
     .then((response) => {
-        if( response === 1){
-            res.status(200).send({
-                msg: 'login successful'
-            });
-        }else{
+        if( response === ''){
             res.status(400).send({
                 msg: 'Login Error'
             });
+        }else{
+            //sends token to client
+            //server sends cookie to client and clients assigns it automatically
+            const cookie = cookieManager.generateCookie(response);
+            res.setHeader('Set-Cookie', cookie);
+            res.status(200).send({
+                msg: 'login successful'
+            });
+            
         }
     }).catch( (error) => {
         console.error( error );
@@ -57,4 +58,21 @@ const login = ( req, res, next ) => {
     });
 
 }
-module.exports = { signUp, login };
+const setCookie = (req, res, next) =>{
+    userManager.verifyToken(req.body.newToken)
+    .then( (response) =>{
+        if(response.length === 0)   throw new Error('no valid token');
+        if(response.access != res.locals.access){
+            const cookie = cookieManager.generateCookie(response);
+            res.setHeader('Set-Cookie', cookie);
+            res.status(200).send({
+                msg: 'cookie updated'
+            });
+        }
+    }).catch( (error) =>{
+        res.status(400).send({
+            msg: error.message
+        })
+    })
+}
+module.exports = { signUp, login, setCookie };
