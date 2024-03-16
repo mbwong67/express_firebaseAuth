@@ -1,6 +1,8 @@
 //TODO: eliminar esto en caso de que no se use
-const { auth } = require("../helpers/firebase");
+const { auth } = require('../helpers/firebase');
+const { getIdToken } = require("firebase/auth");
 const { authAdmin } = require('../helpers/firebase_admin');
+const { cookieManager } = require('../services/cookie.services');
 
 module.exports = {
     validateRegister: (req, res, next) => {
@@ -34,17 +36,42 @@ module.exports = {
     isLoggedIn: async (req, res, next) => {
         try {
             //TODO: cheque el token
-            const idToken = await auth.currentUser.getIdTokenResult();
-            res.locals.access = idToken.claims.access;
+            //maybe ya jala
+            const cookieToken = cookieManager.parseCookie(req.headers.cookie);
+            // const idToken = await auth.currentUser.getIdTokenResult();
+            const idToken = await authAdmin.verifyIdToken(cookieToken);
+            const idTokenAccess = idToken.access;
+            
+            if( !idTokenAccess )    throw new Error('User not allowed');
+            // await authAdmin.getIdToken()
+            // 
+            // // res.locals.access = idToken.claims.access;
+            res.locals.access = idTokenAccess;
 
-            console.log(`ìsLoggedIn {${JSON.stringify(idToken.claims)}}`)
-            if( idToken.claims.admin === true )  res.locals.privilege = 2;
-            else if( idToken.claims.admin === false)    res.locals.privilege = 1;
-            else throw new Error('No claim in token');
-
+            // // console.log(`ìsLoggedIn {${JSON.stringify(idToken.claims)}}`)
+            if( idToken.admin === true ){
+                res.locals.privilege = 2;
+            }  
+            else if( idToken.admin === false){   
+                res.locals.privilege = 1;
+                // const uid = idToken.uid;
+                // const user = await authAdmin.getUser(uid);
+                // const userAccess = user.customClaims.access;
+                // //if user access that is stored directly from firebase is different from the cookie, change it
+                // if(idTokenAccess != userAccess){
+                //     const newToken = await getIdToken(user, true);
+                //     res.locals.newToken = newToken;
+                // }
+            }
+            else {
+                throw new Error('No claim in token');
+            }
+            
             next();
         } catch ( error ) {
             console.error( error.message );
+            const cookie = cookieManager.generateCookie('');
+            res.setHeader('Set-Cookie', cookie);
             res.redirect( 302,'/user/login');
             // res.status(401).location('user/location').end();
         }
