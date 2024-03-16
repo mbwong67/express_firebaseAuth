@@ -22,6 +22,7 @@ router.get('/login', (req, res) =>{
     })
 })
 router.post('/login', userController.login);
+router.post('/setCookie',userMiddleware.isLoggedIn,userController.setCookie);
 
 router.get('/secret-route',userMiddleware.isLoggedIn, (req, res, next) => {
     console.log(req.userData);
