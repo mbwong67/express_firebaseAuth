@@ -1,16 +1,15 @@
 const { auth } = require("../helpers/firebase"); //verificar si sirve
 const { authAdmin } = require('../helpers/firebase_admin');
+const { cookieManager } = require('../services/cookie.services');
 
 module.exports = {
     isAdminLoggedIn: async (req, res, next) =>{
         try {
+            const cookieToken = cookieManager.parseCookie(req.headers.cookie);
+            const idToken = await authAdmin.verifyIdToken(cookieToken);
 
-            const idToken = await auth.currentUser.getIdTokenResult();
 
-            //TODO: ver si se necesita pasar algo al entorno locals
-            // res.locals.access = idToken.claims.access;
-
-            if( idToken.claims.admin === false ){
+            if( idToken.admin === false ){
                 return res.status(401).end();
             }
 
