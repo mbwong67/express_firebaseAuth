@@ -2,8 +2,19 @@ const { auth } = require("../helpers/firebase"); //verificar si sirve
 const { authAdmin } = require('../helpers/firebase_admin');
 const { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } = require("firebase/auth");
 
+const { sortManager } = require('./sort.services');
 
 class UserService {
+   #userCredentials = [];
+   #cou
+
+    addUserCredential(userObj, userTkn){
+      if(this.#userCredentials.length === 0){
+        this.#userCredentials[0] = [userObj, userTkn]
+      }else{
+        // let pos = sortManager.binarySearch(userObj);
+      }
+    }
     async register(email, password) {
       try{
         //user is created for Firebase Auth and returns user obj
@@ -24,56 +35,37 @@ class UserService {
         return 0;
       }
     }
-  
-    // authenticate(email, password) {
-    //   signInWithEmailAndPassword(auth, email, password)
-    //     .then((_) => {
-    //       window.location.href = "index.html";
-    //       // Mostrar alerta de inicio de sesión exitoso
-    //       alert("Has iniciado sesión correctamente. Serás redirigido a la página principal.");
-    //     })
-    //     .catch((error) => {
-    //       console.error(error.message);
-    //               // Mostrar alerta de error de inicio de sesión
-    //               alert("Error al iniciar sesión: " + error.message);
-    //     });
-    // }
+
     async authenticate(email, password) {
       try{
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+
         //gets user token jwt
-        //TODO: Checar si jala
+        //TODO: checar si jala
         const idToken = await user.getIdTokenResult();
         //Confirm is a common user
-        if(!idToken.claims.admin){
-          const uid = user.uid;
-          //sets access to default (false)
-          // console.log(idToken.claims);
-          const updateClaim = await authAdmin.setCustomUserClaims(uid,{
-            admin: idToken.claims.admin,
-            commonUser: idToken.claims.commonUser,
-            access: false
-          });
-        }
-        console.log(`authenticate {${JSON.stringify(idToken.claims)}}`);
-        return 1;
+        //TODO: este codigo permite que cada que se logea, no se tiene acceso
+        // if(!idToken.claims.admin){
+        //   const uid = user.uid;
+        //   //sets access to default (false)
+        //   // console.log(idToken.claims);
+        //   const updateClaim = await authAdmin.setCustomUserClaims(uid,{
+        //     admin: idToken.claims.admin,
+        //     commonUser: idToken.claims.commonUser,
+        //     access: false
+        //   });
+        // }
+        const jwtToken = await user.getIdToken(true);
+        // console.log(`authenticate {${JSON.stringify(idToken.claims)}}`);
+        return jwtToken;
 
       }catch( error ){
         console.error( error.message)
-        return 0;
+        return '';
       }
     }
-  
-    // signOut() {
-    //   signOut(auth)
-    //     .then((_) => {
-    //       window.location.href = "index.html";
-    //     })
-    //     .catch((error) => {
-    //       console.error(error.message);
-    //     });
-    // }
+
     //TODO: Probar que funce
     async signOut() {
       try{
@@ -84,11 +76,6 @@ class UserService {
         if(!idToken.claims.admin){
           const uid = auth.currentUser.uid;
           //sets access to default (false)
-          const updateClaim = await authAdmin.setCustomUserClaims(uid,{
-            admin: idToken.claims.admin,
-            commonUser: idToken.claims.commonUser,
-            access: false
-          });
         }
 
         const signOutFunction = await signOut(auth);
@@ -97,6 +84,14 @@ class UserService {
       }catch( error ){
         console.error( error.message );
         return 0
+      }
+    }
+    async verifyToken(token){
+      try{
+        const idToken = await authAdmin.verifyIdToken(token);
+        return idToken;
+      }catch( error ){
+        return '';
       }
     }
 };
