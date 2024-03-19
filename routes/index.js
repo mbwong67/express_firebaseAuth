@@ -15,9 +15,5 @@ router.use(express.json());
 // how 2 use router
 router.use('/admin', adminRoute);
 router.use('/user', usuarioRoute);
-router.get('/', (req, res) =>{
-    
-    res.render('layouts/form');
-})
 router.get('/home', userMiddleware.isLoggedIn, viewController.renderHome);
 module.exports = router;
