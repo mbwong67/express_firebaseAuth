@@ -36,6 +36,7 @@ const login = ( req, res, next ) => {
 
     userManager.authenticate(email, pass)
     .then((response) => {
+        // console.log(response)
         if( response === ''){
             res.status(400).send({
                 msg: 'Login Error'
@@ -44,7 +45,7 @@ const login = ( req, res, next ) => {
             //sends token to client
             //server sends cookie to client and clients assigns it automatically
             const cookie = cookieManager.generateCookie(response);
-            res.setHeader('Set-Cookie', cookie);
+            res.cookie('jwtToken', cookie[0], cookie[1]);
             res.status(200).send({
                 msg: 'login successful'
             });
@@ -57,6 +58,18 @@ const login = ( req, res, next ) => {
         });
     });
 
+}
+const signOut = (req, res, next) =>{
+    userManager.signOut()
+    .then( (response) =>{
+        res.status(200).send({
+            msg: 'sign out'
+        });
+    }).catch( (error) =>{
+        res.status(500).send({
+            msg: 'Internal server error'
+        });
+    })
 }
 const setCookie = (req, res, next) =>{
     userManager.verifyToken(req.body.newToken)
@@ -75,4 +88,4 @@ const setCookie = (req, res, next) =>{
         })
     })
 }
-module.exports = { signUp, login, setCookie };
+module.exports = { signUp, login, signOut, setCookie };
