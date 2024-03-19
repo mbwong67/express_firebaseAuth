@@ -19,7 +19,7 @@ module.exports = {
     MESSAGING_SENDER_ID: myCredentials.MESSAGING_SENDER_ID,
     APP_ID: myCredentials.APP_ID,
     MEASUREMENT_ID: myCredentials.MEASUREMENT_ID,
-    J_KEY: myCredentials.J_KEY,
+    S_KEY: myCredentials.S_KEY,
     PORT: myCredentials.PORT,
     BASE_URL: myCredentials.BASE_URL,
     SA_KEY_PATH: myCredentials.SA_KEY_PATH,
