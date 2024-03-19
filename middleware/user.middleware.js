@@ -1,5 +1,3 @@
-//TODO: eliminar esto en caso de que no se use
-const { auth } = require('../helpers/firebase');
 const { getIdToken } = require("firebase/auth");
 const { authAdmin } = require('../helpers/firebase_admin');
 const { cookieManager } = require('../services/cookie.services');
@@ -35,33 +33,23 @@ module.exports = {
     },
     isLoggedIn: async (req, res, next) => {
         try {
-            //TODO: cheque el token
-            //maybe ya jala
             const cookieToken = cookieManager.parseCookie(req.headers.cookie);
-            // const idToken = await auth.currentUser.getIdTokenResult();
+
             const idToken = await authAdmin.verifyIdToken(cookieToken);
+            // const cookie = cookieManager.generateCookie(idToken);
+            // res.cookie('jwtToken', cookie[0], cookie[1]);
             const idTokenAccess = idToken.access;
             
             if( !idTokenAccess )    throw new Error('User not allowed');
-            // await authAdmin.getIdToken()
-            // 
-            // // res.locals.access = idToken.claims.access;
+
             res.locals.access = idTokenAccess;
 
-            // // console.log(`ìsLoggedIn {${JSON.stringify(idToken.claims)}}`)
             if( idToken.admin === true ){
                 res.locals.privilege = 2;
             }  
             else if( idToken.admin === false){   
                 res.locals.privilege = 1;
-                // const uid = idToken.uid;
-                // const user = await authAdmin.getUser(uid);
-                // const userAccess = user.customClaims.access;
-                // //if user access that is stored directly from firebase is different from the cookie, change it
-                // if(idTokenAccess != userAccess){
-                //     const newToken = await getIdToken(user, true);
-                //     res.locals.newToken = newToken;
-                // }
+
             }
             else {
                 throw new Error('No claim in token');
@@ -70,10 +58,21 @@ module.exports = {
             next();
         } catch ( error ) {
             console.error( error.message );
-            const cookie = cookieManager.generateCookie('');
-            res.setHeader('Set-Cookie', cookie);
+            res.clearCookie('jwtToken');
             res.redirect( 302,'/user/login');
-            // res.status(401).location('user/location').end();
+        }
+    },
+    removeCookies: (req, res, next) =>{
+        try{
+            res.clearCookie('jwtToken');
+
+            res.status(200).send({
+                msg: 'sign out'
+            })
+        }catch( error ){
+            return res.status(400).send({
+                msg: 'Token Error'
+            })
         }
     }
 }
