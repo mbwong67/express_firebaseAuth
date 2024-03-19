@@ -44,7 +44,7 @@ class AdminService{
         const listUsersResult = await authAdmin.listUsers( 50, nextPageToken );
         let usersArr = [];
         listUsersResult.users.forEach( (userRecord) =>{
-            usersArr.push(userRecord);
+            if( !userRecord.customClaims.admin )    usersArr.push(userRecord);
         });
         //stringify converts to json string | parse converts json string to json Object
         // const usersJson = JSON.parse(JSON.stringify(usersArr));
