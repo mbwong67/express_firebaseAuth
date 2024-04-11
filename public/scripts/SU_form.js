@@ -1,4 +1,5 @@
-// import { BASE_URL } from "../../helpers/config";
+import { BASE_URL } from "../../helpers/config_scripts";
+
 const errorMessage = document.getElementById("errMessage");
 document.getElementById("SU_form").addEventListener("submit", (e) =>{
     e.preventDefault();
@@ -14,7 +15,7 @@ document.getElementById("SU_form").addEventListener("submit", (e) =>{
     // Convierte el objeto JavaScript a una cadena JSON
     const jsonData = JSON.stringify(formDataObj);
     // const ip = '192.168.137.83';
-    const ip = process.env.BASE_URL
+    const ip = BASE_URL
 
     const baseUrl = `${ip}/user/`;
     fetch(baseUrl + "sign-up", {

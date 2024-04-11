@@ -1,4 +1,5 @@
-// import { BASE_URL } from "../../helpers/config";
+import { BASE_URL } from "../../helpers/config_scripts";
+
 const errorMessage = document.getElementById("errMessage");
 
 console.log('fuera dle submite');
@@ -16,7 +17,7 @@ document.getElementById("SI_form").addEventListener("submit", (e) =>{
     // JS obj to JSON obj
     const jsonData = JSON.stringify(formDataObj);
 
-    const ip = process.env.BASE_URL
+    const ip = BASE_URL
     const baseUrl = `${ip}/`;
     fetch(baseUrl + "user/login", {
         method: "POST",

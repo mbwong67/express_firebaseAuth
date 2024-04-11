@@ -1,9 +1,11 @@
+import { BASE_URL } from "../../helpers/config_scripts";
+
 const signOutForm = document.getElementById('signOut_form');
 
 
 signOutForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    const ip = process.env.BASE_URL
+    const ip = BASE_URL
 
     const baseUrl = `${ip}/user/`;
     fetch(baseUrl + "sign-out", {
