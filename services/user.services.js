@@ -2,7 +2,6 @@ const { auth } = require("../helpers/firebase"); //verificar si sirve
 const { authAdmin } = require('../helpers/firebase_admin');
 const { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } = require("firebase/auth");
 
-const { sortManager } = require('./sort.services');
 
 class UserService {
 
