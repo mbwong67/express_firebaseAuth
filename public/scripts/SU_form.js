@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../helpers/config_scripts.js";
+import { BASE_URL } from "./config/config_scripts.json";
 
 const errorMessage = document.getElementById("errMessage");
 document.getElementById("SU_form").addEventListener("submit", (e) =>{
