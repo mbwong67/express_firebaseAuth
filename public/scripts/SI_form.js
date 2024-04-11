@@ -16,8 +16,8 @@ document.getElementById("SI_form").addEventListener("submit", (e) =>{
     // JS obj to JSON obj
     const jsonData = JSON.stringify(formDataObj);
 
-    const ip = 'localhost'
-    const baseUrl = `http://${ip}:3000/`;
+    const ip = process.env.BASE_URL
+    const baseUrl = `${ip}/`;
     fetch(baseUrl + "user/login", {
         method: "POST",
         body: jsonData,

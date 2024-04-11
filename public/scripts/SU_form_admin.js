@@ -13,10 +13,10 @@ document.getElementById("SU_form").addEventListener("submit", (e) =>{
 
     // Convierte el objeto JavaScript a una cadena JSON
     const jsonData = JSON.stringify(formDataObj);
-    // const ip = '192.168.137.83';
-    const ip = process.env.BASE_URL
+    // const ip = '192.168.137.83'
+    const ip = 'localhost'
 
-    const baseUrl = `${ip}/user/`;
+    const baseUrl = `http://${ip}:3000/admin/`;
     fetch(baseUrl + "sign-up", {
         method: "POST",
         body: jsonData,
@@ -25,18 +25,12 @@ document.getElementById("SU_form").addEventListener("submit", (e) =>{
         }
     })
     .then( response => {
-        console.log(response);
-        console.log("try");
+
         if( response.status === 201 ){ //si es 201 redireccionar
-            console.log(true);
-            // return fetch(baseUrl + "login");
             window.location.href = baseUrl + 'login';
         }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
             errorMessage.textContent = 'Error authenticating';
-            setTimeout(()=>{
-                errorMessage.textContent = '';
-            },3000);
+        
         }
     })
-    console.log('despuesde');
 })

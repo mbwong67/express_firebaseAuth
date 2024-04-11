@@ -5,9 +5,9 @@ const signOutForm = document.getElementById('signOut_form');
 
 signOutForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    const ip = 'localhost'
+    const ip = process.env.BASE_URL
 
-    const baseUrl = `http://${ip}:3000/user/`;
+    const baseUrl = `${ip}/user/`;
     fetch(baseUrl + "sign-out", {
         method: "POST",
     })
