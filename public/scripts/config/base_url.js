@@ -1,2 +1,2 @@
 
-const myUrl = "http://localhost:3000"
+const myUrl = "https://express-firebaseauth-embr.onrender.com"
