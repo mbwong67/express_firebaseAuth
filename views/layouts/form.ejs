@@ -56,5 +56,6 @@
             </div>
         </div>
     </div>
-    <script type="application/json" src="../scripts/<%= (title === 'Sign In') ? 'SI_form.js' : (title === 'Sign Up') ? 'SU_form.js' : 'SU_form_admin.js' %>"></script>
+    <script src="../scripts/config/base_url.js"></script>
+    <script type="module" src="../scripts/<%= (title === 'Sign In') ? 'SI_form.js' : (title === 'Sign Up') ? 'SU_form.js' : 'SU_form_admin.js' %>"></script>
 </body>
