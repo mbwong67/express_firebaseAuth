@@ -1,13 +1,11 @@
-import { BASE_URL } from "./config/config_scripts.json";
-
 const signOutForm = document.getElementById('signOut_form');
 
 
 signOutForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    const ip = BASE_URL
+    const ip = "https://express-firebaseauth-embr.onrender.com"
 
-    const baseUrl = `${ip}/user/`;
+    const baseUrl = `${myUrl}/user/`;
     fetch(baseUrl + "sign-out", {
         method: "POST",
     })

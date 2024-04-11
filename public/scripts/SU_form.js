@@ -1,5 +1,5 @@
-import { BASE_URL } from "./config/config_scripts.json";
 
+console.log(myUrl)
 const errorMessage = document.getElementById("errMessage");
 document.getElementById("SU_form").addEventListener("submit", (e) =>{
     e.preventDefault();
@@ -14,10 +14,10 @@ document.getElementById("SU_form").addEventListener("submit", (e) =>{
 
     // Convierte el objeto JavaScript a una cadena JSON
     const jsonData = JSON.stringify(formDataObj);
-    // const ip = '192.168.137.83';
-    const ip = BASE_URL
 
-    const baseUrl = `${ip}/user/`;
+    const ip = "https://express-firebaseauth-embr.onrender.com"
+
+    const baseUrl = `${myUrl}/user/`;
     fetch(baseUrl + "sign-up", {
         method: "POST",
         body: jsonData,
@@ -26,10 +26,9 @@ document.getElementById("SU_form").addEventListener("submit", (e) =>{
         }
     })
     .then( response => {
-        console.log(response);
-        console.log("try");
+
         if( response.status === 201 ){ //si es 201 redireccionar
-            console.log(true);
+
             // return fetch(baseUrl + "login");
             window.location.href = baseUrl + 'login';
         }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
@@ -39,5 +38,5 @@ document.getElementById("SU_form").addEventListener("submit", (e) =>{
             },3000);
         }
     })
-    console.log('despuesde');
+
 })

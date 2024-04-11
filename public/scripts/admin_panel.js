@@ -1,5 +1,3 @@
-import { BASE_URL } from "./config/config_scripts.json";
-
 const checkboxes = document.querySelectorAll('input[type=checkbox]');
 const messageContainer = document.getElementById('messageResponse');
 const signOutForm = document.getElementById('signOut_form');
@@ -7,9 +5,8 @@ const signOutForm = document.getElementById('signOut_form');
 
 signOutForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    const ip = BASE_URL
 
-    const baseUrl = `${ip}/user/`;
+    const baseUrl = `${myUrl}/user/`;
     fetch(baseUrl + "sign-out", {
         method: "POST",
     })
@@ -39,10 +36,10 @@ checkboxes.forEach(checkbox => {
             uid: this.id,
             accessFlag: this.checked
         });
-        // const ip = '192.168.137.83'
-        const ip = 'localhost'
 
-        const baseUrl = `http://${ip}:3000/`;
+        const ip = 'https://express-firebaseauth-embr.onrender.com'
+
+        const baseUrl = `${ip}/`;
         fetch(baseUrl + "admin/modify", {
             method: "POST",
             body: jsonData,
