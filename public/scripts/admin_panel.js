@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../helpers/config_scripts";
+import { BASE_URL } from "../../helpers/config_scripts.js";
 
 const checkboxes = document.querySelectorAll('input[type=checkbox]');
 const messageContainer = document.getElementById('messageResponse');
