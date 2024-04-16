@@ -1,5 +1,3 @@
-//TODO ajustar a lo que se quiere usar
-//specific route example
 const express = require('express');
 const userMiddleware = require("../middleware/user.middleware.js");
 const userController = require("../controllers/user.controllers.js");
