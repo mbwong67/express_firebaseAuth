@@ -23,19 +23,22 @@ document.addEventListener('DOMContentLoaded', (e)=>{
         }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
         }
     }).then( json => {
-
+        console.log(json);
+        const products_uids = Object.keys(json);
         const productsArray = Object.values(json);
-
         // Itera sobre los productos y agrega filas a la tabla
+        let c = 0;
         productsArray.forEach(product => {
             // Crea una nueva fila
             const row = document.createElement('tr');
-
+            
             // Crea celdas para el nombre, cantidad y precio
             const nameCell = document.createElement('td');
             const quantityCell = document.createElement('td');
             const priceCell = document.createElement('td');
 
+            
+            
             // Asigna los datos a las celdas
             nameCell.textContent = product.name;
             quantityCell.textContent = product.quantity;
@@ -48,6 +51,8 @@ document.addEventListener('DOMContentLoaded', (e)=>{
 
             // Agrega la fila al tbody
             tbody.appendChild(row);
+
+            c++;
         });
     })
 })
@@ -147,12 +152,12 @@ productForm.addEventListener('submit', (e)=>{
         }
     })
     .then( response => {
-        if( response.status === 200 ){
+        if( response.status === 201 ){
 
-            console.log(response);
+
         }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
             e.preventDefault();
-            errorMessage.textContent = 'Login Error';
+            errorMessage.textContent = 'new product error';
             setTimeout(()=>{
                 errorMessage.textContent = '';
             },3000);
