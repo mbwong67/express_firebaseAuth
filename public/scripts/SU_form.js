@@ -1,5 +1,3 @@
-
-console.log(myUrl)
 const errorMessage = document.getElementById("errMessage");
 document.getElementById("SU_form").addEventListener("submit", (e) =>{
     e.preventDefault();
@@ -15,7 +13,6 @@ document.getElementById("SU_form").addEventListener("submit", (e) =>{
     // Convierte el objeto JavaScript a una cadena JSON
     const jsonData = JSON.stringify(formDataObj);
 
-    const ip = "https://express-firebaseauth-embr.onrender.com"
 
     const baseUrl = `${myUrl}/user/`;
     fetch(baseUrl + "sign-up", {
