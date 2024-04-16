@@ -16,6 +16,54 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-2"></div>
+            <div class="col-lg-6 col-md-8 login-box">
+                <div class="col-lg-12 login-title">
+                    Crear producto
+                </div>
+                <div class="col-lg-12 login-form">
+                    <div class="col-lg-12 login-form">
+                        <form  class="w3-container" method="post" id="product_form">
+                            <div class="form-group">
+                                <label class="form-control-label">Name</label>
+                                <input type="text" class="form-control" name="name" value="" id="product_name">
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="form-group" >
+                                <label class="form-control-label">Quantity</label>
+                                <input type="number" class="form-control" name="quantity" value="" id="product_quantity">
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="form-group" >
+                                <label class="form-control-label">Price</label>
+                                <input type="number" class="form-control" name="price" value="" id="product_price">
+                                <span class="help-block"></span>
+                            </div>
+    
+                            <div class="col-lg-12 loginbttm">
+                                <div class="col-lg-6 login-btm login-text">
+                                    <!-- Error Message -->
+                                    <p id="errMessage"></p>
+                                </div>
+                                
+                                <div class="col-lg-6 login-btm login-button">
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-outline-primary" value="Crear">
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>   
+                <div class="col-lg-3 col-md-2"></div>
+            </div>
+        </div>
+    </div>
     <script src="../scripts/config/base_url.js"></script>
     <script type="module" src="../scripts/admin_panel.js"></script>
 </body>
