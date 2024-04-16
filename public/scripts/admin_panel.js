@@ -4,6 +4,53 @@ const signOutForm = document.getElementById('signOut_form');
 const productForm = document.getElementById('product_form');
 const errorMessage = document.getElementById("errMessage");
 
+document.addEventListener('DOMContentLoaded', (e)=>{
+    e.preventDefault();
+
+    const baseUrl = `${apiUrl}/`;
+    fetch(baseUrl + "shop/products", {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then( response => {
+
+        if( response.status === 200 ){ //si es 201 redireccionar
+
+            return response.json();
+        }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
+        }
+    }).then( json => {
+
+        const productsArray = Object.values(json);
+
+        // Itera sobre los productos y agrega filas a la tabla
+        productsArray.forEach(product => {
+            // Crea una nueva fila
+            const row = document.createElement('tr');
+
+            // Crea celdas para el nombre, cantidad y precio
+            const nameCell = document.createElement('td');
+            const quantityCell = document.createElement('td');
+            const priceCell = document.createElement('td');
+
+            // Asigna los datos a las celdas
+            nameCell.textContent = product.name;
+            quantityCell.textContent = product.quantity;
+            priceCell.textContent = product.price;
+
+            // Agrega las celdas a la fila
+            row.appendChild(nameCell);
+            row.appendChild(quantityCell);
+            row.appendChild(priceCell);
+
+            // Agrega la fila al tbody
+            tbody.appendChild(row);
+        });
+    })
+})
+
 
 //sign-out button
 signOutForm.addEventListener("submit", (e)=>{
