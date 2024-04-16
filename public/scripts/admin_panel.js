@@ -2,6 +2,7 @@ const checkboxes = document.querySelectorAll('input[type=checkbox]');
 // const messageContainer = document.getElementById('messageResponse');
 const signOutForm = document.getElementById('signOut_form');
 const productForm = document.getElementById('product_form');
+const tbody = document.getElementById('tbody_products');
 const errorMessage = document.getElementById("errMessage");
 
 document.addEventListener('DOMContentLoaded', (e)=>{
