@@ -1,8 +1,11 @@
 const checkboxes = document.querySelectorAll('input[type=checkbox]');
-const messageContainer = document.getElementById('messageResponse');
+// const messageContainer = document.getElementById('messageResponse');
 const signOutForm = document.getElementById('signOut_form');
+const productForm = document.getElementById('product_form');
+const errorMessage = document.getElementById("errMessage");
 
 
+//sign-out button
 signOutForm.addEventListener("submit", (e)=>{
     e.preventDefault();
 
@@ -21,7 +24,7 @@ signOutForm.addEventListener("submit", (e)=>{
     });
 });
 
-
+//admin panel that gives access to users
 let programmaticChange = false;
 // Iterate all checkboxes
 let i = 0;
@@ -64,9 +67,47 @@ checkboxes.forEach(checkbox => {
                 this.checked = !this.checked;//aqui tengo duda chatgpt
                 programmaticChange = false;
             }
-        })
+        });
     }else {
         programmaticChange = false;
     }
   });
 });
+
+productForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    // new formData obj
+    const formData = new FormData(e.target);
+
+    // Form data
+    const formDataObj = {};
+    formData.forEach((value, key) => {
+        formDataObj[key] = value;
+    });
+    formDataObj.quantity = Number(formDataObj.quantity);
+    formDataObj.price = Number(formDataObj.price);
+    // JS obj to JSON obj
+    const jsonData = JSON.stringify(formDataObj);
+    
+
+    const baseUrl = `${apiUrl}/`;
+    fetch(baseUrl + "admin/shop/product", {
+        method: "POST",
+        body: jsonData,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then( response => {
+        if( response.status === 200 ){
+
+            console.log(response);
+        }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
+            e.preventDefault();
+            errorMessage.textContent = 'Login Error';
+            setTimeout(()=>{
+                errorMessage.textContent = '';
+            },3000);
+        }
+    }) 
+})
