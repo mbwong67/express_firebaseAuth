@@ -1,6 +1,5 @@
 const errorMessage = document.getElementById("errMessage");
 
-console.log(myUrl)
 document.getElementById("SI_form").addEventListener("submit", (e) =>{
     e.preventDefault();
     // new formData obj
@@ -15,7 +14,6 @@ document.getElementById("SI_form").addEventListener("submit", (e) =>{
     // JS obj to JSON obj
     const jsonData = JSON.stringify(formDataObj);
 
-    const ip = 'https://express-firebaseauth-embr.onrender.com'
     const baseUrl = `${myUrl}/`;
     fetch(baseUrl + "user/login", {
         method: "POST",
