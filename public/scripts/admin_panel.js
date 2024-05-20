@@ -93,9 +93,8 @@ checkboxes.forEach(checkbox => {
             accessFlag: this.checked
         });
 
-        const ip = 'https://express-firebaseauth-embr.onrender.com'
 
-        const baseUrl = `${ip}/`;
+        const baseUrl = `${myUrl}/`;
         fetch(baseUrl + "admin/modify", {
             method: "POST",
             body: jsonData,
@@ -115,9 +114,8 @@ checkboxes.forEach(checkbox => {
                 },3000);
 
                 //reverts checkbox state if process failed
-                //TODO: checar si jala
                 programmaticChange = true;
-                this.checked = !this.checked;//aqui tengo duda chatgpt
+                this.checked = !this.checked;
                 programmaticChange = false;
             }
         });
