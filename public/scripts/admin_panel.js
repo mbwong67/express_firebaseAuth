@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', (e)=>{
     const baseUrl = `${apiUrl}/`;
     fetch(baseUrl + "shop/products", {
         method: "GET",
+        credentials: "include",
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
         }
     })
     .then( response => {
@@ -98,6 +99,7 @@ checkboxes.forEach(checkbox => {
         fetch(baseUrl + "admin/modify", {
             method: "POST",
             body: jsonData,
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -145,6 +147,7 @@ productForm.addEventListener('submit', (e)=>{
     fetch(baseUrl + "admin/shop/product", {
         method: "POST",
         body: jsonData,
+        credentials: "include",
         headers: {
             'Content-Type': 'application/json'
         }

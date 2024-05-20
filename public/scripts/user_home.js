@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', (e)=>{
     const baseUrl = `${apiUrl}/`;
     fetch(baseUrl + "shop/products", {
         method: "GET",
+        credentials: "include",
         headers: {
             'Accept': 'application/json'
         }
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', (e)=>{
                 fetch(baseUrl + 'buy', {
                     method: "POST",
                     body: jsonData,
+                    credentials: "include",
                     headers: {
                         'Content-Type': 'application/json'
                     }
