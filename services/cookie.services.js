@@ -8,13 +8,13 @@ class CookieService {
     
     generateCookie(jwtToken){
         //secure = (https) ? true : false
-        const secureCookie = false;
+        const secureCookie = true;
         const httpOnlyCookie = true;
         const cookieOptions = {
             secure: secureCookie,
             httpOnly: httpOnlyCookie,
             maxAge: 60 * 60 * 2 * 1000,
-            sameSite: 'strict',
+            sameSite: 'None',
             path: '/'
         };
         // const cookieString = cookie.serialize('jwtToken', jwtToken, cookieOptions);
