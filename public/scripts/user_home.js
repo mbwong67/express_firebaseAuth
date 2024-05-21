@@ -6,94 +6,179 @@ document.addEventListener('DOMContentLoaded', (e)=>{
     e.preventDefault();
 
     const baseUrl = `${apiUrl}/`;
-    fetch(baseUrl + "shop/products", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-            'Accept': 'application/json'
-        }
+    axios.get(baseUrl + "shop/products",{
+        headers:{
+            "Content-Type": "application/json"
+        },
+        withCredentials: true
     })
-    .then( response => {
-
+    .then( response =>{
         if( response.status === 200 ){ //si es 201 redireccionar
+            const data = response.data;
+            const products_uids = Object.keys(data);
+            const productsArray = Object.values(data);
 
-            return response.json();
-        }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
+            // Itera sobre los productos y agrega filas a la tabla
+            let c = 0;
+            productsArray.forEach(product => {
+                // Crea una nueva fila
+                console.log(product)
+                const row = document.createElement('tr');
+
+                // Crea celdas para el nombre, cantidad y precio
+                const nameCell = document.createElement('td');
+                const quantityCell = document.createElement('td');
+                const priceCell = document.createElement('td');
+
+                const addBtn = document.createElement('button');
+                addBtn.textContent = 'Comprar';
+                addBtn.id = products_uids[c];
+
+                addBtn.addEventListener('click', (e)=>{
+                    //TODO: fetch
+                    e.preventDefault();
+                    const dataObj = {};
+                    dataObj['quantity'] = 1;
+                    dataObj['productId'] = addBtn.id;
+
+                    const jsonData = JSON.stringify(dataObj);
+
+                    const baseUrl = `${apiUrl}/shop/`;
+                    axios.post(baseUrl + 'buy', jsonData, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        withCredentials: true
+                    })
+                    .then( response => {
+
+                        if( response.status === 201 ){ //si es 201 redireccionar
+                            buyMessage.textContent = 'Se realizó la compra de '+ product.name
+                            setTimeout(()=>{
+                                buyMessage.textContent = '';
+                            },8000);
+                        }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
+                            // errorMessage.textContent = 'Error in process sign out';
+                            buyMessage.textContent = 'error en la compra de '+ product.name
+                            setTimeout(()=>{
+                                buyMessage.textContent = '';
+                            },8000);
+                        }
+                    });
+                    
+                    
+                })
+
+                // Asigna los datos a las celdas
+                nameCell.textContent = product.name;
+                quantityCell.textContent = product.quantity;
+                priceCell.textContent = product.price;
+                
+
+                // Agrega las celdas a la fila
+                row.appendChild(nameCell);
+                row.appendChild(quantityCell);
+                row.appendChild(priceCell);
+                row.appendChild(addBtn);
+
+                // Agrega la fila al tbody
+                tbody.appendChild(row);
+
+                c++;
+            });
+        }else{
             console.log(response)
         }
-    }).then( json => {
+    })
+    
+    // fetch(baseUrl + "shop/products", {
+    //     method: "GET",
+    //     credentials: "include",
+    //     headers: {
+    //         'Accept': 'application/json'
+    //     }
+    // })
+    // .then( response => {
 
-        const products_uids = Object.keys(json);
-        const productsArray = Object.values(json);
+    //     if( response.status === 200 ){ //si es 201 redireccionar
 
-        // Itera sobre los productos y agrega filas a la tabla
-        let c = 0;
-        productsArray.forEach(product => {
-            // Crea una nueva fila
-            const row = document.createElement('tr');
+    //         return response.json();
+    //     }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
+    //         console.log(response)
+    //     }
+    // }).then( json => {
 
-            // Crea celdas para el nombre, cantidad y precio
-            const nameCell = document.createElement('td');
-            const quantityCell = document.createElement('td');
-            const priceCell = document.createElement('td');
+    //     const products_uids = Object.keys(json);
+    //     const productsArray = Object.values(json);
 
-            const addBtn = document.createElement('button');
-            addBtn.textContent = 'Comprar';
-            addBtn.id = products_uids[c];
+    //     // Itera sobre los productos y agrega filas a la tabla
+    //     let c = 0;
+    //     productsArray.forEach(product => {
+    //         // Crea una nueva fila
+    //         const row = document.createElement('tr');
 
-            addBtn.addEventListener('click', (e)=>{
-                //TODO: fetch
-                e.preventDefault();
-                const dataObj = {};
-                dataObj['quantity'] = 1;
-                dataObj['productId'] = addBtn.id;
+    //         // Crea celdas para el nombre, cantidad y precio
+    //         const nameCell = document.createElement('td');
+    //         const quantityCell = document.createElement('td');
+    //         const priceCell = document.createElement('td');
 
-                const jsonData = JSON.stringify(dataObj);
+    //         const addBtn = document.createElement('button');
+    //         addBtn.textContent = 'Comprar';
+    //         addBtn.id = products_uids[c];
 
-                const baseUrl = `${apiUrl}/shop/`;
-                fetch(baseUrl + 'buy', {
-                    method: "POST",
-                    body: jsonData,
-                    credentials: "include",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then( response => {
+    //         addBtn.addEventListener('click', (e)=>{
+    //             //TODO: fetch
+    //             e.preventDefault();
+    //             const dataObj = {};
+    //             dataObj['quantity'] = 1;
+    //             dataObj['productId'] = addBtn.id;
 
-                    if( response.status === 201 ){ //si es 201 redireccionar
-                        buyMessage.textContent = 'Se realizó la compra de '+ product.name
-                        setTimeout(()=>{
-                            buyMessage.textContent = '';
-                        },8000);
-                    }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
-                        // errorMessage.textContent = 'Error in process sign out';
-                        buyMessage.textContent = 'error en la compra de '+ product.name
-                        setTimeout(()=>{
-                            buyMessage.textContent = '';
-                        },8000);
-                    }
-                });
-            })
+    //             const jsonData = JSON.stringify(dataObj);
 
-            // Asigna los datos a las celdas
-            nameCell.textContent = product.name;
-            quantityCell.textContent = product.quantity;
-            priceCell.textContent = product.price;
+    //             const baseUrl = `${apiUrl}/shop/`;
+    //             fetch(baseUrl + 'buy', {
+    //                 method: "POST",
+    //                 body: jsonData,
+    //                 credentials: "include",
+    //                 headers: {
+    //                     'Content-Type': 'application/json'
+    //                 }
+    //             })
+    //             .then( response => {
+
+    //                 if( response.status === 201 ){ //si es 201 redireccionar
+    //                     buyMessage.textContent = 'Se realizó la compra de '+ product.name
+    //                     setTimeout(()=>{
+    //                         buyMessage.textContent = '';
+    //                     },8000);
+    //                 }else{//sino, quedarse en la vista de sign up y mostrar mensaje de error
+    //                     // errorMessage.textContent = 'Error in process sign out';
+    //                     buyMessage.textContent = 'error en la compra de '+ product.name
+    //                     setTimeout(()=>{
+    //                         buyMessage.textContent = '';
+    //                     },8000);
+    //                 }
+    //             });
+    //         })
+
+    //         // Asigna los datos a las celdas
+    //         nameCell.textContent = product.name;
+    //         quantityCell.textContent = product.quantity;
+    //         priceCell.textContent = product.price;
             
 
-            // Agrega las celdas a la fila
-            row.appendChild(nameCell);
-            row.appendChild(quantityCell);
-            row.appendChild(priceCell);
-            row.appendChild(addBtn);
+    //         // Agrega las celdas a la fila
+    //         row.appendChild(nameCell);
+    //         row.appendChild(quantityCell);
+    //         row.appendChild(priceCell);
+    //         row.appendChild(addBtn);
 
-            // Agrega la fila al tbody
-            tbody.appendChild(row);
+    //         // Agrega la fila al tbody
+    //         tbody.appendChild(row);
 
-            c++;
-        });
-    })
+    //         c++;
+    //     });
+    // })
 })
 signOutForm.addEventListener("submit", (e)=>{
     e.preventDefault();
