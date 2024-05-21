@@ -14,7 +14,7 @@ class CookieService {
             secure: secureCookie,
             httpOnly: httpOnlyCookie,
             maxAge: 60 * 60 * 2 * 1000,
-            sameSite: 'None',
+            sameSite: 'Lax',
             path: '/'
         };
         // const cookieString = cookie.serialize('jwtToken', jwtToken, cookieOptions);
